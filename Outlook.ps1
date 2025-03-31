@@ -1,14 +1,4 @@
-# Check if running as administrator
-If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
-    Try {
-        Start-Process (Get-Process -PID $PID).Path -ArgumentList "-File", $PSCommandPath -Verb RunAs
-        Exit
-    }
-    Catch {
-		Write-Error -Message "Failed to run as Administrator. Please rerun with elevated privileges."
-        Exit
-    }
-}
+#Requires -RunAsAdministrator
 
 New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock -Name AllowDevelopmentWithoutDevLicense -PropertyType DWORD -Value 1 -Force > $null
 Write-Information  -Message "Uninstalling the original version (reffer to readme for errors/red text)"
